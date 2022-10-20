@@ -1,22 +1,22 @@
-#' @title Compute Orthogonal-based distance matrix
+#' @title Compute procrustes-based distance matrix
 #' @description It compute the distance matrix based on distance from
-#' \code{orthogonalDistance}
-#' @usage orthogonalDistanceMatrix(X)
-#' @param X array of orthogonal matrices where the first dimension is the
+#' \code{procrustesDistance}
+#' @usage procrustesDistanceMatrix(X)
+#' @param X array of orthogonal or data aligned matrices where the first dimension is the
 #' number of matrices to be analyzed
-#' @return orthogonal-based distance matrix
+#' @return procrustes-based distance matrix
 #' @export
 #' @author Angela Andreella
 
 
-orthogonalDistanceMatrix <- function(X){
+procrustesDistanceMatrix <- function(X){
 
   N <- dim(X)[1]
   ncomb <- t(combn(N, 2))
   D <- matrix(0, nrow = N, ncol = N)
 
   D[upper.tri(D)] <- sapply(seq(nrow(ncomb)),
-                         function(x) orthogonalDistance(X[ncomb[x,1],,],
+                         function(x) procrustesDistance(X[ncomb[x,1],,],
                                                         X[ncomb[x,2],,]))
 
   D <- D + diag(N)
