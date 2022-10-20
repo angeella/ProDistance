@@ -12,7 +12,7 @@
 #' @author Angela Andreella
 
 
-procrustesDistance <- function(X1, X2, rotational){
+procrustesDistance <- function(X1, X2, rotational = FALSE){
 
   R <- OPP(X1, X2)
 
