@@ -1,0 +1,3 @@
+D[upper.tri(D)] <- sapply(seq(nrow(ncomb)),
+                          function(x) FrobeniusDistance(X[ncomb[x,1],,],
+                                                        X[ncomb[x,2],,]))

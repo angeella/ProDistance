@@ -17,8 +17,8 @@ procrustesDistanceMatrix <- function(X, rotational = FALSE){
   D <- matrix(0, nrow = N, ncol = N)
 
   D[upper.tri(D)] <- sapply(seq(nrow(ncomb)),
-                         function(x) procrustesDistance(X[ncomb[x,1],,],
-                                                        X[ncomb[x,2],,], rotational = rotational))
+                         function(x) procrustesDistance(X1 = X[ncomb[x,1],,],
+                                                        X2 =  X[ncomb[x,2],,], rotational = rotational))
 
   D <- D + diag(N)
   D[lower.tri(D)] <- D[upper.tri(D)]

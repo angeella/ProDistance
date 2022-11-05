@@ -1,0 +1,57 @@
+library(smacof)
+library(rotoDistance)
+library(reticulate)
+
+#distance considering matrices aligned and not
+
+path <- "C:/Users/livio/Desktop/mds/"
+source(paste0(path,"Script/library.R"))
+
+mask = readNifti(paste0(path,"Data/FoodData/mask.nii.gz"))
+mask = ifelse(mask == 0, 0, 1)
+mask = mask!=0
+img_dims <- dim(mask)
+sub_ids <- c(sapply(c(1:4,6:30),function(x) ifelse(x<10,paste0("0",x), paste0(x))))
+
+img <- array(NA, dim = c(length(sub_ids),370, sum(mask==1)))
+img_aligned <- array(NA, dim = c(length(sub_ids),370, 370))
+
+#Raw data
+for(i in c(1:length(sub_ids))){
+  nii <- readNifti(paste0(path,"Data/FoodData/Raw/sub-",sub_ids[i],".nii"))[,,,1:370]
+  nii <- t(matrix(nii, nrow = 64*64*30, ncol = 370))
+  img[i,,] <-nii[, which(mask ==1)]
+
+}
+
+#Aligned data
+#np <- import("numpy")
+
+#for(i in c(1:length(sub_ids))){
+#  npz1 <- np$load(paste0(path,"Data/FoodData/Aligned/sub-",sub_ids[i],"promises_aligned_Identityk10_reduced.npz"))$f[["nimg"]]
+#  img_aligned[i,,] <-matrix(npz1, nrow = 370, ncol = 370)
+#}
+#FoodData_img <- img_aligned
+#FoodData_img <- FoodData_img[-c(1,7),,]
+#usethis::use_data(FoodData_img,  overwrite = TRUE)
+
+data("FoodData_img")
+out <- rotoDistance::procrustesDistanceMatrix(FoodData_img, rotational = FALSE)
+
+stress <-c()
+
+for(i in 1:20){
+
+  stress[i] <- mds(out,ndim = i,
+                   type = "mspline")$stress
+
+}
+
+opt  = which(stress < 0.05)[1]
+
+mds_X <- mds(out,type = "mspline", ndim = opt)
+data("covFoodData")
+db <- db <- cbind(mds_X$conf, covFoodData)
+
+save(db = db,
+     file = "C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_mds_Xreduced.RData")

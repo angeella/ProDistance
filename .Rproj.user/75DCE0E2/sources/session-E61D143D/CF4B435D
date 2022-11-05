@@ -1,27 +1,26 @@
 {
-    "id": "6C8F6C64",
-    "path": "C:/Users/livio/Desktop/mds/Script/distanceXreduced.R",
+    "id": "CF4B435D",
+    "path": "C:/Users/livio/Desktop/mds/Script/distanceR.R",
     "project_path": null,
     "type": "r_source",
-    "hash": "3380595945",
+    "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1666268999296.0,
+    "created": 1667493113014.0,
     "source_on_save": false,
     "relative_order": 4,
     "properties": {
-        "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "57,0",
-        "scrollLine": "43"
+        "cursorPosition": "27,0",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1666270519,
+    "lastKnownWriteTime": 1667570792,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1666270519602,
+    "last_content_update": 1667570792410,
     "read_only": false,
     "read_only_alternatives": []
 }

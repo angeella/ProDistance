@@ -1,0 +1,2 @@
+library(factoextra)
+fviz_dist(as.dist(out))

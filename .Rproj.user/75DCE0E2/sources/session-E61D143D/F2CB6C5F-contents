@@ -1,0 +1,10 @@
+
+for(x in seq(nrow(ncomb))){
+  
+  X1 = X[ncomb[x,1],,]
+  X2 =  X[ncomb[x,2],,]
+  jj <- svd(t(X1) %*% X2)
+  if((2*nrow(X1) - 2 * sum(jj$d))<0){
+    print(x)
+  }
+}

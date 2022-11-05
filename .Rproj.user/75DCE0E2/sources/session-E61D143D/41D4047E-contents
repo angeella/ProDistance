@@ -1,0 +1,110 @@
+cluster_profile <- function(data, cluster_out){
+  
+  
+  out <- data %>% 
+    mutate(clus = cluster_out$groups) %>% 
+    group_by(clus)  %>% 
+  #  na.omit() %>%
+    summarise(across(.cols = -CodATS, mean)) %>% 
+    tidyr::pivot_longer(cols = all_of(var_interest_numeric), 
+                        names_to ="Variables", 
+                        values_to = "share")
+  return(out)
+}
+
+
+cluster_plot <- function(cluster_id, cls_profile, spatialData, cluster_out, ncut) {
+  
+  var <- unique(cls_profile$Variables)
+  
+  national_mean <- st_drop_geometry(spatialData)%>%
+    dplyr::select(-CodATS) %>% 
+  #  dplyr::mutate(across(.fns = ~scale(.))) %>%
+    tidyr::gather(Variables, Mean, var)  %>% 
+    group_by(Variables) %>%
+    summarize(Mean = mean(Mean, na.rm = TRUE))
+  
+  cluster_mean <- st_drop_geometry(spatialData)%>%
+    mutate(clus = cluster_out$groups) %>% 
+    filter(clus == cluster_id) %>% 
+    dplyr::select(-CodATS) %>% 
+    #  dplyr::mutate(across(.fns = ~scale(.))) %>%
+    tidyr::gather(Variables, cls_Mean, var)  %>% 
+    group_by(Variables) %>%
+    summarize(cls_Mean = mean(cls_Mean, na.rm = TRUE))
+  
+  plot1 <- cls_profile %>% 
+     filter(clus == cluster_id) %>% 
+     right_join(national_mean, by = "Variables") %>% 
+    right_join(cluster_mean, by = "Variables") %>%
+     ggplot(.) +
+     geom_col(aes(x = factor(Variables), y = share), fill = rainbow(n = ncut+1)[cluster_id]) +
+     coord_flip() + theme_minimal() + 
+     ylim(min(cls_profile$share),
+          max(cls_profile$share)+1) + labs(x = "") + 
+    theme(text = element_text(size = 40)) +
+    geom_label(aes(x = factor(Variables), y = rep(max(cls_profile$share)-1, length(Variables)), 
+                  label = paste0("Clstr: ", round(cls_Mean,3),
+                                 ", Italy: ", round(Mean,3))),  size=10)
+
+   # + 
+    # labs(y = "Relatively less          Relatively more",
+    #      x = "") +
+  #   theme(panel.grid = element_blank(),
+ #          axis.text.x = element_blank(),
+ #          text = element_text(size=20),
+  #         axis.line.x = element_line(arrow = grid::arrow(length = unit(.3, "cm"), 
+  #                                                        ends = "both")),
+   #        plot.margin=grid::unit(c(0,0,0,0), "mm"))
+   
+     plot2 <- ggplot() +
+     geom_sf(data = spatialData) +
+     geom_sf(data = spatialData %>% 
+               mutate(clus = cluster_out$groups) %>% 
+               filter(clus == cluster_id), fill = rainbow(n = ncut+1)[cluster_id]) +
+     theme_void() 
+
+     cowplot::plot_grid(plot1, plot2, align = "h", nrow = 1, rel_heights = c(4/5, 1/5))
+ 
+}
+
+cluster_boxplot <- function(data, cluster_out){
+    
+ p1 <- data %>% 
+    st_drop_geometry() %>% 
+    mutate(clus = as.factor(cluster_out$groups)) %>% 
+    dplyr::select(all_of(c(var_interest_numeric, "clus"))) %>%
+    gather(cols, value, -clus) %>%
+    ggplot(aes(x = value, group = clus, fill = clus)) + 
+    geom_boxplot() + facet_wrap(.~ cols, ncol = 3, scales = "free") +
+   theme(text = element_text(size = 20))
+ 
+ return(p1)
+
+}
+
+cluster_density <- function(data, cluster_out){
+  p1 <- data %>% 
+    st_drop_geometry() %>% 
+    mutate(clus = as.factor(cluster_out$groups)) %>% 
+    dplyr::select(all_of(c(var_interest_numeric, "clus"))) %>%
+    gather(cols, value, -clus) %>%
+    ggplot(aes(x = value, group = clus, fill = clus)) + 
+    geom_density() + facet_wrap(.~ cols, ncol = 3, scales = "free")+
+    theme(text = element_text(size = 20))
+  return(p1)
+}
+
+
+check_region <- function(cluster, i){
+  #Check regioni
+  codici <- read.csv2("C:/Users/livio/Desktop/Asili/Asili/data/codici.csv", check.names = F)
+  codici$CodReg <- as.factor(codici$Codice.Regione)
+  
+  db_ATS1 <- db_ATS %>% dplyr::left_join(codici[c("Denominazione.Regione", "CodReg")], by = "CodReg") %>% distinct()
+  
+  ATS_scaled.sub1 <- ATS_scaled %>% dplyr::left_join(db_ATS1[c("CodATS", "CodReg", "Denominazione.Regione")], by = "CodATS") %>% distinct()
+  ATS_scaled.sub1$clus <- cluster$groups
+  unique(ATS_scaled.sub1$Denominazione.Regione[ATS_scaled.sub1$clus == i])
+
+}

@@ -1,0 +1,10 @@
+
+library(rotoDistance)
+data("FoodData")
+R <- OPP(X1, X2)
+X1 = FoodData[1,,]
+X2 =  FoodData[5,,]
+D <- svd(R)
+P <- t(R) %*% t(X1) %*% X2
+2*nrow(X1) - 2 * sum(D$d)
+FrobeniusDistance(X1, X2)
