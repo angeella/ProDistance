@@ -1,0 +1,72 @@
+library(smacof)
+library(rotoDistance)
+data("FoodData_img_aligned")
+data("covFoodData")
+out <- procrustesDistanceMatrix(X = FoodData_img_aligned,
+                                rotational = FALSE)
+
+save(dist_matrix_img = out,
+     file = "C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_img_dist.RData")
+
+stress <-c()
+
+for(i in 1:20){
+
+  stress[i] <- mds(out,ndim = i,
+                   type = "mspline")$stress
+
+}
+
+opt  = which(stress < 0.05)[1]
+
+mds_img <- mds(out,type = "mspline", ndim = opt)
+
+db <- cbind(mds_img$conf, covFoodData)
+
+save(db = db,
+     file = "C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_mds_img.RData")
+
+
+###NOT ALIGNED
+library(RNifti)
+
+sub_ids <- c(sapply(c(1:4,6:30),function(x) ifelse(x<10,paste0("0",x), paste0(x))))
+mask <- readNifti("C:/Users/livio/Desktop/mds/Data/FoodData/mask.nii.gz")
+mask <- matrix(mask!=0, nrow = 64*64*30, ncol = 1)
+
+img_raw <- array(NA, dim =c(length(sub_ids), sum(mask), 370))
+
+
+
+for(i in c(1:length(sub_ids))){
+  img <- matrix(readNifti(paste0("C:/Users/livio/Desktop/mds/Data/FoodData/Raw/sub-",
+                          sub_ids[i],".nii.gz"))[,,,1:370], nrow = 64*64*30, ncol = 370)
+
+  img_raw[i,,] <- matrix(img[c(mask),], nrow = sum(mask), ncol = 370)
+}
+
+out <- procrustesDistanceMatrix(X = img_raw,
+                                rotational = FALSE)
+
+save(dist_matrix_img_raw = out,
+     file = "C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_img_raw_dist.RData")
+
+
+stress <-c()
+
+for(i in 1:20){
+
+  stress[i] <- mds(out,ndim = i,
+                   type = "mspline")$stress
+
+}
+
+opt  = which(stress < 0.05)[1]
+
+mds_img <- mds(out,type = "mspline", ndim = 10)
+
+db <- cbind(mds_img$conf, covFoodData)
+
+save(db = db,
+     file = "C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_mds_img_raw.RData")
+

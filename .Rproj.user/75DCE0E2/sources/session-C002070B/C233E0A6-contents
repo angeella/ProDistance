@@ -1,0 +1,28 @@
+library(smacof)
+library(rotoDistance)
+data("FoodData_rotation")
+data("covFoodData")
+out <- procrustesDistanceMatrix(X = FoodData_rotation,
+                                rotational = TRUE)
+
+save(dist_matrix_R = out,
+     file = "C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_R_dist.RData")
+
+load("C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_R_dist.RData")
+stress <-c()
+
+for(i in 1:20){
+
+  stress[i] <- mds(out,ndim = i,
+                   type = "ratio")$stress
+
+}
+
+opt  = which(stress < 0.05)[1]
+
+mds_R <- mds(out,type = "ratio", ndim = opt) #10
+
+db <- cbind(mds_R$conf, covFoodData)
+
+save(db = db,
+     file = "C:/Users/livio/Desktop/mds/Data/FoodData/Output/output_mds_R.RData")

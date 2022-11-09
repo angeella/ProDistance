@@ -1,0 +1,84 @@
+#Create data
+
+#Covariate
+
+db <- read.csv("C:/Users/livio/Desktop/mds/Data/FoodData/participants.tsv",sep ="")
+
+covFoodData <- db[-which(db$participant_id == "sub-05"),]
+
+usethis::use_data(covFoodData)
+
+
+#Img raw
+
+library(RNifti)
+
+sub_ids <- c(sapply(c(1:4, 6:30),function(x) ifelse(x<10,paste0("0",x), paste0(x))))
+mask <- readNifti("C:/Users/livio/Desktop/mds/Data/FoodData/mask.nii.gz")
+mask <- matrix(mask!=0, nrow = 64*64*30, ncol = 1)
+
+img_raw <- array(NA, dim =c(length(sub_ids), sum(mask), 370))
+
+
+
+for(i in c(1:length(sub_ids))){
+  img <- matrix(readNifti(paste0("C:/Users/livio/Desktop/mds/Data/FoodData/raw/sub-",
+                                 sub_ids[i],".nii.gz"))[,,,1:370], nrow = 64*64*30, ncol = 370)
+
+  img_raw[i,,] <- matrix(img[c(mask),], nrow = sum(mask), ncol = 370)
+}
+
+FoodData_img_raw <- img_raw
+
+usethis::use_data(FoodData_img_raw)
+
+
+#Rotations
+#Load rotations matrix (reduced so, n times n) n = 370
+path <- "C:/Users/livio/Desktop/"
+setwd(path)
+source("mds/Script/library.R")
+
+np <- import("numpy")
+
+path <-""
+sub_ids <- c(sapply(c(1:4,6:30),function(x) ifelse(x<10,paste0("0",x), paste0(x))))
+
+R <- array(NA, dim =c(length(sub_ids), 370,370))
+
+for(i in c(1:length(sub_ids))){
+
+  R[i,,] <- np$load(paste0(path,"mds/Data/FoodData/R/sub-",sub_ids[i],
+                           "promises_aligned_Identityk10_rotation.npz"))[["nimg"]]
+
+}
+FoodData_rotation <- R
+setwd("C:/Users/livio/Desktop/mds/RProject/rotoDistance/")
+
+usethis::use_data(FoodData_rotation)
+
+
+#Img aligned
+
+path <- "C:/Users/livio/Desktop/"
+setwd(path)
+source("mds/Script/library.R")
+
+np <- import("numpy")
+
+path <-""
+sub_ids <- c(sapply(c(1:4,6:30),function(x) ifelse(x<10,paste0("0",x), paste0(x))))
+
+img_aligned <- array(NA, dim =c(length(sub_ids), 370,370))
+
+for(i in c(1:length(sub_ids))){
+
+  img_aligned[i,,] <- np$load(paste0(path,"mds/Data/FoodData/Aligned/sub-",sub_ids[i],
+                           "promises_aligned_Identityk10_reduced.npz"))[["nimg"]]
+
+}
+FoodData_img_aligned <- img_aligned
+setwd("C:/Users/livio/Desktop/mds/RProject/rotoDistance/")
+
+usethis::use_data(FoodData_img_aligned)
+
