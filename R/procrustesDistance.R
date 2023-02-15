@@ -1,11 +1,11 @@
 #' @title Compute Procrustes-based distance
 #' @description It compute the Frobenius distance between two matrices
 #' @usage procrustesDistance(X1, X2)
-#' @param X1 first matrix. It can be a data functionally aligned matrix or
+#' @param X1 first matrix. It can be a functionally aligned matrix or
 #' estimated orthogonal matrix
-#' @param X2 second matrix. It can be a data functionally aligned matrix or
+#' @param X2 second matrix. It can be a functionally aligned matrix or
 #' estimated orthogonal matrix
-#' @param rotational are the two matrices orthogonal?
+#' @param rotational are the two \code{X1} and  \code{X2} matrices orthogonal?
 #' @return Procrustes-based distance
 #' @export
 #' @author Angela Andreella

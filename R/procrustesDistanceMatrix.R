@@ -2,10 +2,9 @@
 #' @description It compute the distance matrix based on distance from
 #' \code{procrustesDistance}
 #' @usage procrustesDistanceMatrix(X)
-#' @param X array of orthogonal or data aligned matrices where the first
-#' dimension is the
-#' number of matrices to be analyzed
-#' @param rotational are the two matrices orthogonal?
+#' @param X array of orthogonal or functionally aligned matrices
+#' where the first dimension is the number of matrices to be analyzed
+#' @param rotational are the matrices orthogonal?
 #' @return procrustes-based distance matrix
 #' @export
 #' @author Angela Andreella
