@@ -17,7 +17,7 @@ remotes::install_github("angeella/rotoDistance")
 
 ## Example
 
-This is a basic example which shows you how to compute *Procrustes*-based distance matrices. The data used in this example are the ones from ["Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. Statistical Methods & Applications, 1-16."](https://arxiv.org/abs/2301.06164), i.e., $24$ subjects passively looking at food and no-food (office utensils) images collected by [Smeets, P. A., Kroese, F. M., Evers, C., & de Ridder, D. T. (2013). Allured or alarmed: counteractive control responses to food temptations in the brain. Behavioural brain research, 248, 41-45.](https://www.sciencedirect.com/science/article/pii/S0166432813001824).
+This is a basic example which shows you how to compute *Procrustes*-based distance matrices. The data used in this example are the ones from ["Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. Statistical Methods & Applications, 1-16."](https://arxiv.org/abs/2301.06164), i.e., $24$ subjects passively looking at food and no-food (office utensils) images collected by [Smeets, P. A., Kroese, F. M., Evers, C., & de Ridder, D. T. (2013). Allured or alarmed: counteractive control responses to food temptations in the brain. Behavioural brain research, 248, 41-45.](https://www.sciencedirect.com/science/article/pii/S0166432813001824)
 
 ### *Residual*-based distance
 
