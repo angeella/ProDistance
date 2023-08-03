@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `rotoDistance` package aims to compute the *Procrustes*-based distances, i.e., the *residual*-based and the *rotational*-based. Please refer to ["Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. arXiv preprint arXiv:2301.06164."](https://arxiv.org/abs/2301.06164).
+The `rotoDistance` package aims to compute the *Procrustes*-based distances, i.e., the *residual*-based and the *rotational*-based. Please refer to ["Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. Statistical Methods & Applications, 1-16."](https://link.springer.com/article/10.1007/s10260-023-00689-y).
 
 ## Installation
 
@@ -17,7 +17,7 @@ remotes::install_github("angeella/rotoDistance")
 
 ## Example
 
-This is a basic example which shows you how to compute *Procrustes*-based distance matrices. The data used in this example are the ones from ["Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. arXiv preprint arXiv:2301.06164."](https://arxiv.org/abs/2301.06164), i.e., $24$ subjects passively looking at food and no-food (office utensils) images collected by [Smeets, P. A., Kroese, F. M., Evers, C., & de Ridder, D. T. (2013). Allured or alarmed: counteractive control responses to food temptations in the brain. Behavioural brain research, 248, 41-45.](https://www.sciencedirect.com/science/article/pii/S0166432813001824).
+This is a basic example which shows you how to compute *Procrustes*-based distance matrices. The data used in this example are the ones from ["Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. Statistical Methods & Applications, 1-16."](https://arxiv.org/abs/2301.06164), i.e., $24$ subjects passively looking at food and no-food (office utensils) images collected by [Smeets, P. A., Kroese, F. M., Evers, C., & de Ridder, D. T. (2013). Allured or alarmed: counteractive control responses to food temptations in the brain. Behavioural brain research, 248, 41-45.](https://www.sciencedirect.com/science/article/pii/S0166432813001824).
 
 ### *Residual*-based distance
 
@@ -107,7 +107,7 @@ db %>% ggplot(aes_string(x = "D1", y = "D6",
 
 ## References
 
-Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. arXiv preprint arXiv:2301.06164.
+Andreella, A., De Santis, R., Vesely, A., & Finos, L. (2023). Procrustes-based distances for exploring between-matrices similarity. Statistical Methods & Applications, 1-16.
 
 ## Did you find some bugs?
 
